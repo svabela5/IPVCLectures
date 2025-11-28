@@ -145,6 +145,7 @@ ipvc/
 ENV/
 env.bak/
 venv.bak/
+ipcv/
 
 # Spyder project settings
 .spyderproject

@@ -10,9 +10,9 @@ ACCESS_KEYS = [
     'zjno8nnY9j97lEDZd47Yvba7iI41uLzLr7EAIqL6t6w',
     '5laxToS_R2_8rsaceek_NcZC2K_0Wp-E1SwIzqYzp0w'
 ]
-SAVE_FOLDER = 'wallpaper_dataset'
-PROGRESS_FILE = 'progress.txt'
-TOTAL_IMAGES = 1000
+SAVE_FOLDER = 'HomeAssignment/Dataset/Test Materials/Backgrounds'
+PROGRESS_FILE = 'HomeAssignment/progress.txt'
+TOTAL_IMAGES = 1050
 KEYWORDS = ['nature', 'abstract', 'minimalist', 'space', 'architecture']
 # ---------------------
 

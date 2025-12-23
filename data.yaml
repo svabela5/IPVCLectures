@@ -1,0 +1,8 @@
+
+train: ./dataset/images/train
+val: ./dataset/images/test
+test: ./dataset/images/test
+
+nc: 3
+names: ['ChatGPT', 'Claude', 'Gemini']
+    

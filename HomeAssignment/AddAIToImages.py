@@ -11,21 +11,21 @@ FOREGROUND_ROOT_TEST = 'HomeAssignment/Dataset/Foregrounds_Test'
 OUTPUT_BASE = 'HomeAssignment/Dataset/dataset'
 
 # TARGET CLASSES (These get labels)
-TARGET_CLASSES = ['ChatGPT', 'Claude', 'Gemini']
+TARGET_CLASSES = ['ChatGPT', 'Claude', 'Gemini', 'Non Chatbot']
 
 # DISTRACTOR FOLDER (Used for negatives AND blocking target windows)
 DISTRACTOR_NAME = 'distractors'
 
 # SETTINGS
-TRAIN_COPIES_PER_IMG = 300
-TEST_COPIES_PER_IMG = 30
-NEGATIVES_COUNT = 500
+TRAIN_COPIES_PER_IMG = 150
+TEST_COPIES_PER_IMG = 15
+NEGATIVES_COUNT = 150
 
 # OCCLUSION SETTINGS
-OCCLUSION_PROBABILITY = 0.6  # 60% chance a window will be partially blocked
-OCCLUSION_MAX_COVER = 0.5    # Max 50% of the window can be covered (so it's not totally hidden)
+OCCLUSION_PROBABILITY = 0.3  # 60% chance a window will be partially blocked
+OCCLUSION_MAX_COVER = 0.7    # Max 50% of the window can be covered (so it's not totally hidden)
 
-SCALE_MIN = 0.3
+SCALE_MIN = 0.5
 SCALE_MAX = 0.8
 # ---------------------
 

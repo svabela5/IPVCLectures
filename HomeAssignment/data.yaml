@@ -1,0 +1,9 @@
+
+path: C:\Users\svena\Documents\LEVEL 6\LVL 6.3\ComputerVision\HomeAssignment\Dataset\dataset
+train: images/train
+val: images/test
+test: images/test
+
+nc: 4
+names: ['ChatGPT', 'Claude', 'Gemini', 'Non Chatbot']
+    

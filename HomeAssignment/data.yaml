@@ -4,6 +4,6 @@ train: images/train
 val: images/test
 test: images/test
 
-nc: 4
-names: ['ChatGPT', 'Claude', 'Gemini', 'Non Chatbot']
+nc: 3
+names: ['ChatGPT', 'Claude', 'Gemini']
     

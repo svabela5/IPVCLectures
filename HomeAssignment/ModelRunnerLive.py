@@ -54,7 +54,6 @@ def process_screen_capture():
             # Start timer for FPS control
             start_time = time.time()
 
-            # 3. Capture the Screen
             sct_img = sct.grab(capture_area)
             
             # Convert to numpy array and drop Alpha channel (BGRA -> BGR)
@@ -84,17 +83,13 @@ def process_screen_capture():
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-            # --- NEW: 1 FPS THROTTLING ---
-            # Calculate how long the processing took
+
             process_time = time.time() - start_time
-            
-            # Calculate how much time is left in this second
+
             time_to_wait = 1.0 - process_time
             
-            # If processing was fast (e.g., 0.2s), sleep for the rest (0.8s)
             if time_to_wait > 0:
                 time.sleep(time_to_wait)
-            # -----------------------------
 
     except KeyboardInterrupt:
         print("Interrupted by user.")

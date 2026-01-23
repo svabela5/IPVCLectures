@@ -1,5 +1,5 @@
-import AddAIToImages
+import HomeAssignment.DatasetGenerator as DatasetGenerator
 
-imgs = AddAIToImages.get_images('Dataset/wallpaper_dataset')
+imgs = DatasetGenerator.get_images('Dataset/wallpaper_dataset')
 
 print(imgs)

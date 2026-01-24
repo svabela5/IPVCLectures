@@ -4,12 +4,38 @@ import shutil
 import cv2
 from PIL import Image
 from tqdm import tqdm
+import requests
+
+HA_URL = "http://homeassistant.local:8123"  # Change to your HA URL
+HA_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmOWU4MmE5N2VlMTc0YzFkYWI4NDg5ZDE4OWNjNTUzNSIsImlhdCI6MTc2OTI1MTk1MCwiZXhwIjoyMDg0NjExOTUwfQ.asyTDGn2H8E_w6jba06fBmGVdGOxV4QkUuCceHSRjN8"   # Get from HA profile
+
+def trigger_laptop_reminder():
+    """Trigger the laptop_reminder automation in Home Assistant."""
+    
+    url = f"{HA_URL}/api/services/automation/trigger"
+    headers = {
+        "Authorization": f"Bearer {HA_TOKEN}",
+        "Content-Type": "application/json",
+    }
+    data = {
+        "entity_id": "automation.laptop_reminder"
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        response.raise_for_status()
+        print("✓ Laptop reminder automation triggered successfully!")
+        return True
+    except requests.exceptions.RequestException as e:
+        print(f"✗ Error triggering automation: {e}")
+        return False
+
 
 # --- CONFIGURATION ---
 BACKGROUND_DIR = 'HomeAssignment/Dataset/wallpaper_dataset'
 FOREGROUND_ROOT_TRAIN = 'HomeAssignment/Dataset/Foregrounds_Train'
 FOREGROUND_ROOT_TEST = 'HomeAssignment/Dataset/Foregrounds_Test'
-OUTPUT_BASE = 'HomeAssignment/Dataset/TestDataset060126/newest_dataset'
+OUTPUT_BASE = 'HomeAssignment/Dataset/TestDataset060126/NoOcclusionDataset'
 
 # TARGET CLASSES (These get labels)
 TARGET_CLASSES = ['ChatGPT', 'Claude', 'Gemini']
@@ -23,7 +49,7 @@ TEST_COPIES_PER_IMG = 75
 NEGATIVES_COUNT = 500
 
 # OCCLUSION SETTINGS
-OCCLUSION_PROBABILITY = 0.6  # 60% chance a window will be partially blocked
+OCCLUSION_PROBABILITY = 0.0  # 60% chance a window will be partially blocked
 OCCLUSION_MAX_COVER = 0.9    # Max 50% of the window can be covered (so it's not totally hidden)
 
 SCALE_MIN = 0.5
@@ -50,11 +76,10 @@ def get_images(folder):
 
 def get_RGBA_image(path):
     try:
-        imBGR = cv2.imread(path)
-        imRGBA = cv2.cvtColor(imBGR, cv2.COLOR_BGR2RGBA)
-
-        return imRGBA
-    except:
+        # Use Pillow instead of cv2 to ensure compatibility with .paste() and .size
+        return Image.open(path).convert("RGBA")
+    except Exception as e:
+        print(f"Error loading {path}: {e}")
         return None
 
 # https://roboflow.com/formats/yolo
@@ -125,7 +150,7 @@ def apply_occlusion(base_img, target_bbox, distractors):
     
     return base_img
 
-def process_partition(split_name, fg_root, bg_images, class_map, copies_per_img, negativeCount):
+def process_partition(split_name, fg_root, bg_images, class_map, copies_per_img, negativeCount, occlusion_prob=OCCLUSION_PROBABILITY):
     print(f"\n--- Processing {split_name.upper()} ---")
     global_count = 0
     
@@ -166,7 +191,7 @@ def process_partition(split_name, fg_root, bg_images, class_map, copies_per_img,
 
                     # 3. Add Occlusion (Distractor ON TOP OF target)
                     # This simulates a popup or another app blocking the view
-                    if distractors and random.random() < OCCLUSION_PROBABILITY:
+                    if distractors and random.random() < occlusion_prob:
                         final_img = apply_occlusion(final_img, (x1, y1, x2, y2), distractors)
 
                     # Save Image
@@ -218,7 +243,7 @@ def main():
     print(f"Class Mapping: {class_map}")
 
     process_partition('train', FOREGROUND_ROOT_TRAIN, train_bgs, class_map, TRAIN_COPIES_PER_IMG, NEGATIVES_COUNT)
-    process_partition('test', FOREGROUND_ROOT_TEST, test_bgs, class_map, TEST_COPIES_PER_IMG, int(NEGATIVES_COUNT * 0.1))
+    process_partition('test', FOREGROUND_ROOT_TEST, test_bgs, class_map, TEST_COPIES_PER_IMG, int(NEGATIVES_COUNT * 0.1), 0.6)
 
     yaml_content = f"""
 path: {os.path.abspath(OUTPUT_BASE)}
@@ -236,3 +261,4 @@ names: {TARGET_CLASSES}
 
 if __name__ == "__main__":
     main()
+    trigger_laptop_reminder()

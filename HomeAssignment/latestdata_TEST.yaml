@@ -1,0 +1,9 @@
+
+path: c:\Users\svena\Documents\LEVEL 6\LVL 6.3\ComputerVision\HomeAssignment\Dataset\TestDataset060126\NoOcclusionDataset
+train: images/train
+val: images/test
+test: images/test
+
+nc: 3
+names: ['ChatGPT', 'Claude', 'Gemini']
+    

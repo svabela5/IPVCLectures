@@ -5,7 +5,7 @@ from ultralytics import YOLO
 import time
 
 # --- CONFIGURATION ---
-MODEL_PATH = 'HomeAssignment/AI Models/AI Detector 210126 Take 2/weights/best.pt'
+MODEL_PATH = 'AI Models/FinalAIModel/weights/best.pt'
 CONFIDENCE_THRESHOLD = 0.5
 OUTPUT_FILENAME = 'output_1fps.mp4'  # Name of the saved file
 

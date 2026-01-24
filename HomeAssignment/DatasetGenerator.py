@@ -35,7 +35,7 @@ def trigger_laptop_reminder():
 BACKGROUND_DIR = 'HomeAssignment/Dataset/wallpaper_dataset'
 FOREGROUND_ROOT_TRAIN = 'HomeAssignment/Dataset/Foregrounds_Train'
 FOREGROUND_ROOT_TEST = 'HomeAssignment/Dataset/Foregrounds_Test'
-OUTPUT_BASE = 'HomeAssignment/Dataset/TestDataset060126/NoOcclusionDataset'
+OUTPUT_BASE = 'HomeAssignment/Dataset/TestDataset060126/FinalDataset'
 
 # TARGET CLASSES (These get labels)
 TARGET_CLASSES = ['ChatGPT', 'Claude', 'Gemini']
@@ -213,8 +213,8 @@ def process_partition(split_name, fg_root, bg_images, class_map, copies_per_img,
         print(f"  Generating Distractor-Only Negatives...")
         for _ in tqdm(range(negativeCount)):
             try:
-                bg = get_RGBA_image(random.choice(bg_images)) #Image.open(random.choice(bg_images)).convert("RGBA")
-                dist_img = get_RGBA_image(random.choice(distractors)) #Image.open(random.choice(distractors)).convert("RGBA")
+                bg = get_RGBA_image(random.choice(bg_images))
+                dist_img = get_RGBA_image(random.choice(distractors))
                 
                 final_img, _, _ = paste_window_safe(bg, dist_img, SCALE_MIN, SCALE_MAX)
                 
@@ -243,7 +243,7 @@ def main():
     print(f"Class Mapping: {class_map}")
 
     process_partition('train', FOREGROUND_ROOT_TRAIN, train_bgs, class_map, TRAIN_COPIES_PER_IMG, NEGATIVES_COUNT)
-    process_partition('test', FOREGROUND_ROOT_TEST, test_bgs, class_map, TEST_COPIES_PER_IMG, int(NEGATIVES_COUNT * 0.1), 0.6)
+    process_partition('test', FOREGROUND_ROOT_TEST, test_bgs, class_map, TEST_COPIES_PER_IMG, int(NEGATIVES_COUNT * 0.1))
 
     yaml_content = f"""
 path: {os.path.abspath(OUTPUT_BASE)}
@@ -254,7 +254,7 @@ test: images/test
 nc: {len(TARGET_CLASSES)}
 names: {TARGET_CLASSES}
     """
-    with open('homeassignment/latestdata_TEST.yaml', 'w') as f:
+    with open('homeassignment/finalDataset.yaml', 'w') as f:
         f.write(yaml_content)
 
     print("\nGeneration Complete! Dataset includes occluded samples.")
